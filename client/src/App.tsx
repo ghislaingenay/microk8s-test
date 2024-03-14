@@ -1,35 +1,67 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, Suspense } from "react";
+import "./App.css";
+
+interface Task {
+  id: number;
+  title: string;
+  completed: boolean;
+}
+
+// const getTasks = async () => {
+//   return axios
+//     .get<Task[]>("http://localhost:3000/tasks")
+//     .then((res) => res.data);
+// };
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [inputTaskTitle, setInputTaskTitle] = useState("");
+
+  const deleteTask = (id: number) => {
+    setTasks(tasks.filter((task) => task.id !== id));
+    // axios.delete(`http://localhost:3000/tasks/${id}`).then(() => reloadTasks());
+  };
+
+  // const reloadTasks = () => {
+  //   getTasks().then((tasks) => setTasks(tasks));
+  // };
+
+  // useEffect(() => {
+  //   reloadTasks();
+  // }, []);
+
+  const addNewTask = () => {
+    if (!inputTaskTitle) return;
+    const task: Task = {
+      title: inputTaskTitle,
+      completed: false,
+      id: Math.floor(Math.random() * 1000),
+    };
+    setTasks([...tasks, task]);
+    setInputTaskTitle("");
+    // axios.post("http://localhost:3000/tasks", task).then(() => reloadTasks());
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
+      <h1>Tasks</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+        <input
+          style={{ padding: "0.7rem", marginRight: "0.5rem" }}
+          onChange={(e) => setInputTaskTitle(e?.target?.value || "")}
+          value={inputTaskTitle}
+        />
+        <button onClick={addNewTask}>Add new task</button>
+        <Suspense fallback={<p>Loading...</p>}>
+          {tasks.map(({ id, title }) => (
+            <p key={id}>
+              [{id}] {title} <button onClick={() => deleteTask(id)}>❌</button>
+            </p>
+          ))}
+        </Suspense>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
