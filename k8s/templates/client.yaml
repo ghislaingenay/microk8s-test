@@ -33,5 +33,5 @@ spec:
   ports:
     - name: "{{ .Values.appName.client }}"
       protocol: TCP
-      port: 3000
-      targetPort: 3000
+      port: 80 # currently isten on nginx :80
+      targetPort: 3000 # forwarded to port 3000
