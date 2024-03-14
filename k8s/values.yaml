@@ -23,3 +23,4 @@ issuer:
   server: "https://xx.xx.org/directory"
   key: lets-encrypt-default
   email: ghislaingenay@gmail.com
+# Can add secret names linked to secret.yaml file for example
