@@ -1,0 +1,24 @@
+# Same as values.yaml
+clientSrv: client-srv
+backendSrv: backend-srv
+
+# Same as values.yaml
+appName:
+  client: client
+  backend: backend
+
+# Same as values.yaml
+containers:
+  client:
+    image: ghislaingenay/xxxxx
+    tag: latest
+  backend:
+    image: ghislaingenay/xxxxxx
+    tag: latest
+
+namespace: staging
+
+baseDomain: xxx.staging.xxx.com
+baseWwwDomain: xx.staging.xxx.xxx.com
+
+hostSecret: xx-staging-xxxx-com

@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ .Values.appName.backend }}-depl"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "{{ .Values.appName.backend }}"
+  template:
+    metadata:
+      labels:
+        app: "{{ .Values.appName.backend }}"
+    spec:
+      containers:
+        - name: "{{ .Values.appName.backend }}"
+          image: "{{ .Values.containers.backend.image }}:{{ .Values.containers.backend.tag }}"
+          #env:
+          #  - name: xxxx
+          #    valueFrom:
+          #      secretKeyRef:
+          #        key: xxxxx
+          #        name: xxx
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ .Values.backendSrv }}"
+spec:
+  selector:
+    app: "{{ .Values.appName.backend }}"
+  ports:
+    - name: "{{ .Values.appName.backend }}"
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

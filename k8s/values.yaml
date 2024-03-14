@@ -1,0 +1,20 @@
+clientSrv: client-srv
+namespace: default
+backendSrv: backend-srv
+
+appName:
+  client: client
+  backend: backend
+
+containers:
+  client:
+    image: ghislaingenay/xxxxx
+    tag: latest
+  backend:
+    image: ghislaingenay/xxxxxx
+    tag: latest
+
+baseDomain: xxx.xxx.com
+baseWwwDomain: xx.xxx.xxx.com
+
+hostSecret: xx-xxxx-com
