@@ -17,8 +17,8 @@ app.post("/", async (c) => {
 
 app.delete("/:id", (c) => {
   const id = Number(c.req.param("id"));
-  const response = taskManager.deleteTask(id);
-  return c.json({ message: "Task deleted", data: { result: response } });
+  taskManager.deleteTask(id);
+  return c.json({ message: "Task deleted" });
 });
 
 const port = 3000;
