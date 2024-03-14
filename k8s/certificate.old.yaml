@@ -1,0 +1,16 @@
+"{{ .Values }}"
+
+apiVersion: cert-manager.io/v1
+
+kind: Certificate
+metadata:
+  name: "{{ .Values.hostSecret }}-tls"
+spec:
+  secretName: "{{ .Values.hostSecret }}"
+  issuerRef:
+    name: "{{ .Values.issuer.key }}"
+    kind: ClusterIssuer
+  commonName: "{{ .Values.baseDomain }}"
+  dnsNames:
+    - "{{ .Values.baseDomain }}"
+    -  "{{ .Values.baseWwwDomain }}"
