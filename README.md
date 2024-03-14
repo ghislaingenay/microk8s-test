@@ -5,4 +5,7 @@ I have only small website but a minima user data but I wanted to improve my own 
 
 #### Launch an application using only React and a basic NodeJS application.
 
-The purposes is to demonstrated the connection and configuration using Kubernetes. 
+The purposes is to demonstrated the connection and configuration using Kubernetes.
+
+pnpm create vite
+React => TypeScript + SWC
