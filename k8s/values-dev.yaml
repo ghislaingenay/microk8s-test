@@ -22,3 +22,8 @@ baseDomain: xxx.staging.xxx.com
 baseWwwDomain: xx.staging.xxx.xxx.com
 
 hostSecret: xx-staging-xxxx-com
+
+issuer:
+  server: https://acme-staging-v02.api.letsencrypt.org/directory
+  key: lets-encrypt-staging
+  email: ghislaingenay@gmail.com

@@ -18,3 +18,8 @@ baseDomain: xxx.xxx.com
 baseWwwDomain: xx.xxx.xxx.com
 
 hostSecret: xx-xxxx-com
+
+issuer:
+  server: "https://xx.xx.org/directory"
+  key: lets-encrypt-default
+  email: ghislaingenay@gmail.com

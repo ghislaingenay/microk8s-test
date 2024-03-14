@@ -22,3 +22,8 @@ baseDomain: xxx.xxx.com
 baseWwwDomain: xx.xxx.xxx.com
 
 hostSecret: xx-xxxx-com
+
+issuer:
+  server: https://acme-v02.api.letsencrypt.org/directory
+  key: lets-encrypt-prod
+  email: ghislaingenay@gmail.com
