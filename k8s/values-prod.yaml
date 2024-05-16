@@ -10,18 +10,18 @@ appName:
 # Same as values.yaml
 containers:
   client:
-    image: ghislaingenay/xxxxx
+    image: ghislaingenay/client-mk
     tag: latest
   backend:
-    image: ghislaingenay/xxxxxx
+    image: ghislaingenay/backend-mk
     tag: latest
 
 namespace: production
 
-baseDomain: xxx.xxx.com
-baseWwwDomain: xx.xxx.xxx.com
+baseDomain: mk.redicoding.com
+baseWwwDomain: www.mk.redicoding.com
 
-hostSecret: xx-xxxx-com
+hostSecret: mk-redicoding-com
 
 issuer:
   server: https://acme-v02.api.letsencrypt.org/directory

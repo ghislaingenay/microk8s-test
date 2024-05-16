@@ -10,18 +10,18 @@ appName:
 # Same as values.yaml
 containers:
   client:
-    image: ghislaingenay/xxxxx
+    image: ghislaingenay/client-mk
     tag: latest
   backend:
-    image: ghislaingenay/xxxxxx
+    image: ghislaingenay/backend-mk
     tag: latest
 
 namespace: staging
 
-baseDomain: xxx.staging.xxx.com
-baseWwwDomain: xx.staging.xxx.xxx.com
+baseDomain: mk.staging.redicoding.com
+baseWwwDomain: www.mk.staging.redicoding.com
 
-hostSecret: xx-staging-xxxx-com
+hostSecret: mk-staging-redicoding-com
 
 issuer:
   server: https://acme-staging-v02.api.letsencrypt.org/directory
