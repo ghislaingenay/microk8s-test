@@ -1,5 +1,8 @@
-import { useState, Suspense } from "react";
+import { useState, useEffect, useDeferredValue } from "react";
 import "./App.css";
+import axios from "axios";
+
+
 
 interface Task {
   id: number;
@@ -7,39 +10,59 @@ interface Task {
   completed: boolean;
 }
 
-// const getTasks = async () => {
-//   return axios
-//     .get<Task[]>("http://localhost:3000/tasks")
-//     .then((res) => res.data);
-// };
+
+const baseUrl = import.meta.env.VITE_BACK_END as string;
+const token = import.meta.env.VITE_ACCESS_TOKEN_SECRET
+
+const baseAxios = axios.create({
+  baseURL: `${baseUrl}`,
+  // withCredentials: true,
+  headers: {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${token}`,
+   
+  },
+})
+
+
 
 function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [inputTaskTitle, setInputTaskTitle] = useState("");
+  const deferredInput = useDeferredValue(inputTaskTitle);
 
   const deleteTask = (id: number) => {
-    setTasks(tasks.filter((task) => task.id !== id));
-    // axios.delete(`http://localhost:3000/tasks/${id}`).then(() => reloadTasks());
+    tasks && setTasks(tasks.filter((task) => task.id !== id));
+    baseAxios.delete(`${baseUrl}/tasks/${id}`).then(() => reloadTasks());
   };
 
-  // const reloadTasks = () => {
-  //   getTasks().then((tasks) => setTasks(tasks));
-  // };
+  const getTasks = async () => {
+    return baseAxios
+      .get<Task[]>(`${baseUrl}/tasks`)
+      .then((res) => res.data).catch((err) => {console.log(err)
+        return []
+      });
+  };
+  
 
-  // useEffect(() => {
-  //   reloadTasks();
-  // }, []);
+  const reloadTasks = () => {
+    getTasks().then((tasks) => setTasks(tasks));
+  };
 
-  const addNewTask = () => {
-    if (!inputTaskTitle) return;
+  useEffect(() => {
+    reloadTasks();
+  }, []);
+
+  const addNewTask = async () => {
+    if (!deferredInput) return;
     const task: Task = {
-      title: inputTaskTitle,
+      title: deferredInput,
       completed: false,
       id: Math.floor(Math.random() * 1000),
     };
-    setTasks([...tasks, task]);
+    tasks && setTasks([...tasks, task]);
     setInputTaskTitle("");
-    // axios.post("http://localhost:3000/tasks", task).then(() => reloadTasks());
+    baseAxios.post(`${baseUrl}/tasks`, task).then(() => reloadTasks());
   };
 
   return (
@@ -52,16 +75,16 @@ function App() {
           value={inputTaskTitle}
         />
         <button onClick={addNewTask}>Add new task</button>
-        <Suspense fallback={<p>Loading...</p>}>
-          {tasks.map(({ id, title }) => (
-            <p key={id}>
-              [{id}] {title} <button onClick={() => deleteTask(id)}>❌</button>
-            </p>
-          ))}
-        </Suspense>
+        {!!tasks.length && tasks.map(({ id, title }) => (
+      <p key={id}>
+        [{id}] {title} <button onClick={() => deleteTask(id)}>❌</button>
+      </p>
+    ))}
+   
       </div>
     </>
   );
 }
+
 
 export default App;
