@@ -16,14 +16,14 @@ containers:
     image: ghislaingenay/backend-mk
     tag: latest
 
-namespace: production
+namespace: mk-staging
 
-baseDomain: mk.redicoding.com
-baseWwwDomain: www.mk.redicoding.com
+baseDomain: mk.staging.redicoding.com
+baseWwwDomain: www.mk.staging.redicoding.com
 
-hostSecret: mk-redicoding-com
+hostSecret: mk-staging-redicoding-com
 
 issuer:
-  server: https://acme-v02.api.letsencrypt.org/directory
-  key: lets-encrypt-prod
+  server: https://acme-staging-v02.api.letsencrypt.org/directory
+  key: lets-encrypt-staging
   email: ghislaingenay@gmail.com
