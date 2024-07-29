@@ -21,6 +21,6 @@ COPY --from=builder --chown=hono:nodejs /app/node_modules /app/node_modules
 COPY --from=builder --chown=hono:nodejs /app/build /app/build
 
 USER hono
-EXPOSE 3000
+EXPOSE 8000
 
 CMD ["node", "/app/build/index.js"]
