@@ -32,5 +32,5 @@ spec:
   ports:
     - name: {{ .Values.appName.client }}
       protocol: TCP
-      port: 3000
+      port: 80
       targetPort: 3000
