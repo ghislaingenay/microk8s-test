@@ -24,7 +24,7 @@ spec:
               service:
                 name: {{ .Values.appName.backend }}-svc
                 port:
-                  number: 3000
+                  number: 8000
           - path: /
             pathType: ImplementationSpecific
             backend:
@@ -41,7 +41,7 @@ spec:
               service:
                 name: {{ .Values.appName.backend }}-svc
                 port:
-                  number: 3000
+                  number: 8000
           - path: /
             pathType: ImplementationSpecific
             backend:
