@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: "{{ .Values.appName.backend }}-depl"
+  name: {{ .Values.appName.client }}-depl
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: "{{ .Values.appName.backend }}"
+      app: {{ .Values.appName.client }}
   template:
     metadata:
       labels:
-        app: "{{ .Values.appName.backend }}"
+        app: {{ .Values.appName.client }}
     spec:
       containers:
-        - name: "{{ .Values.appName.backend }}"
-          image: "{{ .Values.containers.backend.image }}":"{{ .Values.containers.backend.tag }}"
+        - name: {{ .Values.appName.client }}
+          image: ghislaingenay/{{ .Values.containers.client.image }}
           env:
             - name: ACCESS_TOKEN
               valueFrom:
@@ -25,12 +25,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: "{{ .Values.backendSrv }}"
+  name: {{ .Values.appName.client }}-svc
 spec:
   selector:
-    app: "{{ .Values.appName.backend }}"
+    app: {{ .Values.appName.client }}
   ports:
-    - name: "{{ .Values.appName.backend }}"
+    - name: {{ .Values.appName.client }}
       protocol: TCP
       port: 3000
       targetPort: 3000
