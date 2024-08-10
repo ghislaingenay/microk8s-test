@@ -12,7 +12,6 @@ containers:
     image: backend-mk
     tag: latest
 
-namespace: mk-staging
 
 baseDomain: mk.staging.redicoding.com
 baseWwwDomain: www.mk.staging.redicoding.com
@@ -25,7 +24,7 @@ issuer:
   email: ghislaingenay@gmail.com
 
 # -- Override the deployment namespace; defaults to .Release.Namespace
-namespaceOverride: ""
+namespaceOverride: "development"
 ## Labels to apply to all resources
 ##
 commonLabels: {}

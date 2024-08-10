@@ -1,14 +1,14 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ingress-mk-service
+  name: ingress-service
   annotations:
     kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/use-regex: "true"
     cert-manager.io/cluster-issuer: {{ .Values.issuer.key }}
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
 spec:
-  ingressClassName: nginx
+  #ingressClassName: nginx
   tls:
     - hosts:
         - {{ .Values.baseDomain }}
@@ -49,3 +49,24 @@ spec:
                 name: {{ .Values.appName.client }}-svc
                 port:
                   number: 3000
+# ---
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: acme-challenge-ingress
+#   namespace: default
+#   annotations:
+#     kubernetes.io/ingress.class: "nginx"
+#     cert-manager.io/acme-challenge: "true"
+# spec:
+#   rules:
+#     - host: mk.staging.redicoding.com
+#       http:
+#         paths:
+#           - path: /.well-known/acme-challenge/*
+#             pathType: ImplementationSpecific
+#             backend:
+#               service:
+#                 name: cert-manager
+#                 port:
+#                   number: 8089
