@@ -3,81 +3,70 @@ kind: Ingress
 metadata:
   name: ingress-service
   annotations:
-    kubernetes.io/ingress.class: nginx
+    kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/use-regex: "true"
-    cert-manager.io/cluster-issuer: "{{ .Values.issuer.key }}"
+    cert-manager.io/cluster-issuer: {{ .Values.issuer.key }}
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
 spec:
+  #ingressClassName: nginx
   tls:
     - hosts:
-        - "{{ .Values.baseDomain }}"
-        - "{{ .Values.baseWwwDomain }}"
-      secretName: "{{ .Values.hostSecret }}"
+        - {{ .Values.baseDomain }}
+        - {{ .Values.baseWwwDomain }}
+      secretName: {{ .Values.hostSecret }}
   rules:
-    - host: "{{ .Values.baseDomain }}"
+    - host: {{ .Values.baseDomain }}
       http:
         paths:
           - path: /api/?(.*)
-            pathType: Prefix
+            pathType: ImplementationSpecific
             backend:
               service:
-                name: "{{ .Values.backendSrv }}"
+                name: {{ .Values.appName.backend }}-svc
                 port:
-                  number: 3000
-          - path: /?(.*)
-            pathType: Prefix
+                  number: 8000
+          - path: /
+            pathType: ImplementationSpecific
             backend:
               service:
-                name: "{{ .Values.clientSrv }}"
+                name: {{ .Values.appName.client }}-svc
                 port:
                   number: 3000
-    - host: "{{ .Values.baseWwwDomain }}"
+    - host: {{ .Values.baseWwwDomain }}
       http:
         paths:
           - path: /api/?(.*)
-            pathType: Prefix
+            pathType: ImplementationSpecific
             backend:
               service:
-                name: "{{ .Values.backendSrv }}"
+                name: {{ .Values.appName.backend }}-svc
                 port:
-                  number: 3000
-          - path: /?(.*)
-            pathType: Prefix
+                  number: 8000
+          - path: /
+            pathType: ImplementationSpecific
             backend:
               service:
-                name: "{{ .Values.clientSrv }}"
+                name: {{ .Values.appName.client }}-svc
                 port:
                   number: 3000
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  annotations:
-    service.beta.kubernetes.io/do-loadbalancer-enable-proxy-protocol: "true"
-    service.beta.kubernetes.io/do-loadbalancer-hostname: "{{ .Values.baseWwwDomain }}"
-  labels:
-    helm.sh/chart: ingress-nginx-2.0.3
-    app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/instance: ingress-nginx
-    app.kubernetes.io/version: 0.32.0
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/component: controller
-  name: ingress-nginx-controller
-  namespace: ingress-nginx
-spec:
-  type: LoadBalancer
-  externalTrafficPolicy: Local
-  ports:
-    - name: http
-      port: 80
-      protocol: TCP
-      targetPort: http
-    - name: https
-      port: 443
-      protocol: TCP
-      targetPort: https
-  selector:
-    app.kubernetes.io/name: ingress-nginx
-    app.kubernetes.io/instance: ingress-nginx
-    app.kubernetes.io/component: controller
+# ---
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: acme-challenge-ingress
+#   namespace: default
+#   annotations:
+#     kubernetes.io/ingress.class: "nginx"
+#     cert-manager.io/acme-challenge: "true"
+# spec:
+#   rules:
+#     - host: mk.staging.redicoding.com
+#       http:
+#         paths:
+#           - path: /.well-known/acme-challenge/*
+#             pathType: ImplementationSpecific
+#             backend:
+#               service:
+#                 name: cert-manager
+#                 port:
+#                   number: 8089

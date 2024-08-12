@@ -14,8 +14,11 @@ interface Task {
 const baseUrl = import.meta.env.VITE_BACK_END as string;
 const token = import.meta.env.VITE_ACCESS_TOKEN_SECRET
 
+const isProduction = import.meta.env.MODE === "production";
+const origin = isProduction ? baseUrl : "http://localhost:8000";
+
 const baseAxios = axios.create({
-  baseURL: `${baseUrl}`,
+  baseURL: origin,
   // withCredentials: true,
   headers: {
     'Content-Type': 'application/json',

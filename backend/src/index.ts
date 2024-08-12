@@ -9,8 +9,11 @@ dotenv.config();
 
 const app = new Hono();
 
+const isProduction = process.env.NODE_ENV === "production";
+const origin = isProduction? "https://yourdomain.com" : "http://localhost:5173";
+
 app.use('*', cors({
-  origin: 'http://localhost:5173',
+  origin,
   allowHeaders: ['Content-Type', 'Authorization'],
   allowMethods: ['POST', 'GET', 'OPTIONS', 'DELETE'],
   exposeHeaders: ['Content-Length'],
