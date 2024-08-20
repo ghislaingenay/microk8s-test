@@ -13,7 +13,7 @@ spec:
     - hosts:
         - {{ .Values.baseDomain }}
         - {{ .Values.baseWwwDomain }}
-      secretName: {{ .Values.hostSecret }}
+      secretName: {{ .Values.hostSecret }}-tls
   rules:
     - host: {{ .Values.baseDomain }}
       http:
@@ -24,9 +24,9 @@ spec:
               service:
                 name: {{ .Values.appName.backend }}-svc
                 port:
-                  number: 8000
+                  number: 3000
           - path: /
-            pathType: ImplementationSpecific
+            pathType: Prefix
             backend:
               service:
                 name: {{ .Values.appName.client }}-svc
@@ -41,9 +41,9 @@ spec:
               service:
                 name: {{ .Values.appName.backend }}-svc
                 port:
-                  number: 8000
+                  number: 3000
           - path: /
-            pathType: ImplementationSpecific
+            pathType: Prefix 
             backend:
               service:
                 name: {{ .Values.appName.client }}-svc
