@@ -9,12 +9,16 @@ spec:
       app: {{ .Values.appName.backend }}
   template:
     metadata:
+      annotations:
+        rollme: {{ randAlphaNum 5 | quote }}
       labels:
         app: {{ .Values.appName.backend }}
     spec:
       containers:
         - name: {{ .Values.appName.backend }}
           image: ghislaingenay/{{ .Values.containers.backend.image }}
+          ports:
+            - containerPort: 8000
           env:
             - name: ACCESS_TOKEN
               valueFrom:
@@ -33,4 +37,4 @@ spec:
     - name: {{ .Values.appName.backend }}
       protocol: TCP
       port: 3000
-      targetPort: 3000
+      targetPort: 8000
