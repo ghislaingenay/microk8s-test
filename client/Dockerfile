@@ -8,5 +8,7 @@ RUN pnpm run build
 
 EXPOSE 3000
 
+ENV NODE_ENV=production
+
 CMD [ "serve", "-s", "/usr/src/app/build" ]
 # docker run -p 8080:80 <image> to run the container
