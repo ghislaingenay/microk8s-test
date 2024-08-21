@@ -23,8 +23,7 @@ spec:
                 secretKeyRef:
                   key: VITE_ACCESS_TOKEN
                   name: mk-secret
-          env:
-            - name: BACK_END
+            - name: VITE_BACK_END
               valueFrom:
                 secretKeyRef:
                   key: VITE_BACK_END
