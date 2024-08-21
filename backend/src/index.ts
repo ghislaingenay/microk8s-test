@@ -1,7 +1,7 @@
 import { serve } from "@hono/node-server";
 import { Context, Env, Hono } from "hono";
 import * as dotenv from "dotenv";
-import {cors} from "hono/cors";
+import { cors } from "hono/cors";
 import { TaskCreate, taskManager } from "./TaskManager";
 import { BlankInput } from "hono/types";
 
@@ -10,27 +10,33 @@ dotenv.config();
 const app = new Hono();
 
 const isProduction = process.env.NODE_ENV === "production";
-const origin = isProduction? "https://yourdomain.com" : "http://localhost:5173";
+const origin = isProduction
+  ? ["*.staging.redicoding.com"]
+  : "http://localhost:5173";
 
-app.use('*', cors({
-  origin,
-  allowHeaders: ['Content-Type', 'Authorization'],
-  allowMethods: ['POST', 'GET', 'OPTIONS', 'DELETE'],
-  exposeHeaders: ['Content-Length'],
-  maxAge: 600,
-  credentials: true,
-}))
+app.use(
+  "*",
+  cors({
+    origin,
+    allowHeaders: ["Content-Type", "Authorization"],
+    allowMethods: ["POST", "GET", "OPTIONS", "DELETE"],
+    exposeHeaders: ["Content-Length"],
+    maxAge: 600,
+    credentials: true,
+  })
+);
 
 const checkAuth = (c: Context<Env, "/", BlankInput>) => {
-  const accessToken = process.env.ACCESS_TOKEN
+  const accessToken = process.env.ACCESS_TOKEN;
   if (!accessToken) throw new Error("ACCESS_TOKEN is not set");
   if (c.req.header("Authorization") !== `Bearer ${accessToken}`) {
-    throw new Error("Invalid auth is not set");
-  }}
+    throw new Error("Unauthorized");
+  }
+};
 
 app.get("/tasks", (c) => {
-  checkAuth(c)
-  const tasks = taskManager.getTasks()
+  checkAuth(c);
+  const tasks = taskManager.getTasks();
   return c.json(tasks);
 });
 
@@ -49,7 +55,6 @@ app.delete("/tasks/:id", (c) => {
 });
 
 const port = 8000;
-
 
 console.log(`Server is running on port ${port}`);
 
