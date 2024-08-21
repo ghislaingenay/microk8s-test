@@ -54,6 +54,10 @@ app.delete("/tasks/:id", (c) => {
   return c.json({ message: "Task deleted" });
 });
 
+app.all("*", (c) => {
+  return c.json({ message: "Not Valid path" }, 404);
+});
+
 const port = 8000;
 
 console.log(`Server is running on port ${port}`);
