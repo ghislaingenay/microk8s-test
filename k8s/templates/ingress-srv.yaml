@@ -7,8 +7,8 @@ metadata:
     nginx.ingress.kubernetes.io/use-regex: "true"
     cert-manager.io/cluster-issuer: {{ .Values.issuer.key }}
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
-  #ingressClassName: nginx
   tls:
     - hosts:
         - {{ .Values.baseDomain }}
@@ -18,15 +18,15 @@ spec:
     - host: {{ .Values.baseDomain }}
       http:
         paths:
-          - path: /api/?(.*)
+          - path: /api(/|$)(.*)
             pathType: ImplementationSpecific
             backend:
               service:
                 name: {{ .Values.appName.backend }}-svc
                 port:
-                  number: 3000
-          - path: /
-            pathType: Prefix
+                  number: 8000
+          - path: / #/(.*)
+            pathType: Prefix #ImplementationSpecific
             backend:
               service:
                 name: {{ .Values.appName.client }}-svc
@@ -35,21 +35,20 @@ spec:
     - host: {{ .Values.baseWwwDomain }}
       http:
         paths:
-          - path: /api/?(.*)
+          - path: /api(/|$)(.*)
             pathType: ImplementationSpecific
             backend:
               service:
                 name: {{ .Values.appName.backend }}-svc
                 port:
-                  number: 3000
-          - path: /
-            pathType: Prefix 
+                  number: 8000
+          - path: / #/(.*)
+            pathType: Prefix #ImplementationSpecific
             backend:
               service:
                 name: {{ .Values.appName.client }}-svc
                 port:
                   number: 3000
-# ---
 # apiVersion: networking.k8s.io/v1
 # kind: Ingress
 # metadata:
@@ -70,3 +69,133 @@ spec:
 #                 name: cert-manager
 #                 port:
 #                   number: 8089
+
+# ```apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: echo-ingress
+#   annotations:
+#     kubernetes.io/ingress.global-static-ip-name: "157.230.194.91"
+#     cert-manager.io/cluster-issuer: "letsencrypt-prod"
+#     nginx.ingress.kubernetes.io/rewrite-target: /$2
+#     nginx.ingress.kubernetes.io/proxy-body-size: "0"
+#     nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+#     nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+#     nginx.ingress.kubernetes.io/client-max-body-size: "0"
+#     nginx.ingress.kubernetes.io/use-regex: 'true'
+# spec:
+#   ingressClassName: nginx
+#   tls:
+#   - hosts:
+#     - staging.k8s.haupcar.com
+#     secretName: letsencrypt-prod
+#   rules:
+#   - host: staging.k8s.haupcar.com
+#     http:
+#       paths:
+#       - pathType: Prefix
+#         path: /ts-host-revenue(/|$)(.*)
+#         backend:
+#           service:
+#             name: ts-host-revenue-service
+#             port:
+#               number: 80
+#       - pathType: Prefix
+#         path: /ts-authentication(/|$)(.*)
+#         backend:
+#           service:
+#             name: ts-authentication-service
+#             port:
+#               number: 80
+#       - pathType: Prefix
+#         path: /partners(/|$)(.*)
+#         backend:
+#           service:
+#             name: haup-partners-frontend-service
+#             port:
+#               number: 80
+#       - pathType: Prefix
+#         path: /ts-upload(/|$)(.*)
+#         backend:
+#           service:
+#             name: ts-upload-service
+#             port:
+#               number: 80
+#       - pathType: Prefix
+#         path: /ts-restful-api(/|$)(.*)
+#         backend:
+#           service:
+#             name: ts-restful-api-service
+#             port:
+#               number: 80
+#       - pathType: Prefix
+#         path: /ts-reservation(/|$)(.*)
+#         backend:
+#           service:
+#             name: ts-reservation-service
+#             port:
+#               number: 80
+#       - pathType: Prefix
+#         path: /ts-messenger(/|$)(.*)
+#         backend:
+#           service:
+#             name: ts-reservation-service
+#             port:
+#               number: 80
+#       - pathType: Prefix
+#         path: /ts-chat(/|$)(.*)
+#         backend:
+#           service:
+#             name: ts-chat-service
+#             port:
+#               number: 80
+#       - pathType: Prefix
+#         path: /register(/|$)(.*)
+#         backend:
+#           service:
+#             name: vehicle-submission-web-service
+#             port:
+#               number: 80
+#       - pathType: Prefix
+#         path: /ts-ev-charger(/|$)(.*)
+#         backend:
+#           service:
+#             name: ts-ev-charger-service
+#             port:
+#               number: 80
+#       - pathType: Prefix
+#         path: /vehicle-notification-bot(/|$)(.*)
+#         backend:
+#           service:
+#             name: vehicle-notification-bot-service
+#             port:
+#               number: 80
+#       - pathType: Prefix
+#         path: /ts-blacklist(/|$)(.*)
+#         backend:
+#           service:
+#             name: ts-blacklist-service
+#             port:
+#               number: 80
+#       - pathType: Prefix
+#         path: /ts-booking(/|$)(.*)
+#         backend:
+#           service:
+#             name: ts-booking-service
+#             port:
+#               number: 80
+#       - pathType: Prefix
+#         path: /ts-haup-apis(/|$)(.*)
+#         backend:
+#           service:
+#             name: ts-haup-apis-service
+#             port:
+#               number: 80
+#       - pathType: Prefix
+#         path: /ts-maps-tracking(/|$)(.*)
+#         backend:
+#           service:
+#             name: ts-maps-tracking-service
+#             port:
+#               number: 80
+# ```
