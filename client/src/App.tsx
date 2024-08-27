@@ -2,32 +2,26 @@ import { useState, useEffect, useDeferredValue } from "react";
 import "./App.css";
 import axios from "axios";
 
-
-
 interface Task {
   id: number;
   title: string;
   completed: boolean;
 }
 
-
 const baseUrl = import.meta.env.VITE_BACK_END as string;
-const token = import.meta.env.VITE_ACCESS_TOKEN_SECRET
+const token = import.meta.env.VITE_ACCESS_TOKEN;
 
-const isProduction = import.meta.env.MODE === "production";
-const origin = isProduction ? baseUrl : "http://localhost:8000";
+// const isProduction = import.meta.env.MODE === "production";
+const origin = baseUrl ?? "http://localhost:4000";
 
 const baseAxios = axios.create({
   baseURL: origin,
   // withCredentials: true,
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
     Authorization: `Bearer ${token}`,
-   
   },
-})
-
-
+});
 
 function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -42,11 +36,12 @@ function App() {
   const getTasks = async () => {
     return baseAxios
       .get<Task[]>(`${baseUrl}/tasks`)
-      .then((res) => res.data).catch((err) => {console.log(err)
-        return []
+      .then((res) => res.data)
+      .catch((err) => {
+        console.log(err);
+        return [];
       });
   };
-  
 
   const reloadTasks = () => {
     getTasks().then((tasks) => setTasks(tasks));
@@ -78,16 +73,15 @@ function App() {
           value={inputTaskTitle}
         />
         <button onClick={addNewTask}>Add new task</button>
-        {!!tasks.length && tasks.map(({ id, title }) => (
-      <p key={id}>
-        [{id}] {title} <button onClick={() => deleteTask(id)}>❌</button>
-      </p>
-    ))}
-   
+        {!!tasks.length &&
+          tasks.map(({ id, title }) => (
+            <p key={id}>
+              [{id}] {title} <button onClick={() => deleteTask(id)}>❌</button>
+            </p>
+          ))}
       </div>
     </>
   );
 }
-
 
 export default App;
