@@ -9,10 +9,10 @@ dotenv.config();
 
 const app = new Hono();
 
-const isProduction = process.env.NODE_ENV === "production";
-const origin = isProduction
-  ? ["*.staging.redicoding.com"]
-  : "http://localhost:5173";
+const isDevelopment = process.env.NODE_ENV === "development";
+const origin = isDevelopment
+  ? "http://localhost:5173"
+  : ["https://mk.redicoding.com", "https://www.mk.redicoding.com"];
 
 app.use(
   "*",
