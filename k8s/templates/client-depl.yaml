@@ -17,6 +17,8 @@ spec:
       containers:
         - name: {{ .Values.appName.client }}
           image: ghislaingenay/{{ .Values.containers.client.image }}
+          ports:
+            - containerPort: 3000
           env:
             - name: VITE_ACCESS_TOKEN
               valueFrom:
