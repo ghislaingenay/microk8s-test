@@ -2,6 +2,9 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: "{{ .Values.hostSecret }}-tls"
+  annotations:
+    meta.helm.sh/release-name: "mk-release"
+    meta.helm.sh/release-namespace: "default"
 spec:
   secretName: "{{ .Values.hostSecret }}"
   issuerRef:
@@ -11,3 +14,20 @@ spec:
   dnsNames:
     - "{{ .Values.baseDomain }}"
     - "{{ .Values.baseWwwDomain }}"
+
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: "{{ .Values.hostApiSecret }}-tls"
+  annotations:
+    meta.helm.sh/release-name: "mk-release"
+    meta.helm.sh/release-namespace: "default"
+spec:
+  secretName: "{{ .Values.hostApiSecret }}"
+  issuerRef:
+    name: "{{ .Values.issuer.key }}"
+    kind: ClusterIssuer
+  commonName: "{{ .Values.baseApiDomain }}"
+  dnsNames:
+    - "{{ .Values.baseApiDomain }}"
