@@ -9,17 +9,26 @@ spec:
       app: {{ .Values.appName.client }}
   template:
     metadata:
+      annotations:
+        rollme: {{ randAlphaNum 5 | quote }}
       labels:
         app: {{ .Values.appName.client }}
     spec:
       containers:
         - name: {{ .Values.appName.client }}
           image: ghislaingenay/{{ .Values.containers.client.image }}
+          ports:
+            - containerPort: 3000
           env:
-            - name: ACCESS_TOKEN
+            - name: VITE_ACCESS_TOKEN
               valueFrom:
                 secretKeyRef:
-                  key: ACCESS_TOKEN
+                  key: VITE_ACCESS_TOKEN
+                  name: mk-secret
+            - name: VITE_BACK_END
+              valueFrom:
+                secretKeyRef:
+                  key: VITE_BACK_END
                   name: mk-secret
 ---
 apiVersion: v1
