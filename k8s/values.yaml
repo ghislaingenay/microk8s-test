@@ -12,19 +12,26 @@ containers:
     image: backend-mk
     tag: latest
 
+# baseDomain: mk.staging.redicoding.com
+# baseApiDomain: api.mk.staging.redicoding.com
+# baseWwwDomain: www.mk.staging.redicoding.com
+baseDomain: mk.redicoding.com
+baseApiDomain: api.mk.redicoding.com
+baseWwwDomain: www.mk.redicoding.com
 
-baseDomain: mk.staging.redicoding.com
-baseWwwDomain: www.mk.staging.redicoding.com
-
-hostSecret: mk-staging-redicoding-com
+# hostSecret: mk-staging-redicoding-com
+hostSecret: mk-redicoding-com
+hostApiSecret: api-mk-redicoding-com
 
 issuer:
-  server: https://acme-staging-v02.api.letsencrypt.org/directory
-  key: lets-encrypt-staging
+  # server: https://acme-staging-v02.api.letsencrypt.org/directory
+  server: https://acme-v02.api.letsencrypt.org/directory
+  # key: lets-encrypt-staging
+  key: lets-encrypt-prod
   email: ghislaingenay@gmail.com
 
 # -- Override the deployment namespace; defaults to .Release.Namespace
-namespaceOverride: "development"
+# namespaceOverride: "development"
 ## Labels to apply to all resources
 ##
 commonLabels: {}
